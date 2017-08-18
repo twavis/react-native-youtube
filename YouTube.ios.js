@@ -84,6 +84,11 @@ export default class YouTube extends React.Component {
     else return false;
   }
 
+  _onClick = event => {
+    // When none-embedded url is requested this fires with requested url
+    if (this.props.onClick) this.props.onClick(event.nativeEvent);
+  };
+
   _onError = event => {
     if (this.props.onError) this.props.onError(event.nativeEvent);
   };
@@ -169,19 +174,20 @@ export default class YouTube extends React.Component {
   // This method will force a reload on the inner iFrame. Use it if you know the cost
   // and still wants to refresh the iFrame's vars
   reloadIframe() {
-    this.setState({ playerParams: parsePlayerParams(this.props) });
+    this.setState({playerParams: parsePlayerParams(this.props)});
   }
 
   render() {
     return (
       <RCTYouTube
-        style={[{ overflow: 'hidden' }, this.props.style]}
+        style={[{overflow: 'hidden'}, this.props.style]}
         playerParams={this.state.playerParams}
         play={this.props.play}
         videoId={this.props.videoId}
         videoIds={this.props.videoIds}
         playlistId={this.props.playlistId}
         loopProp={this.props.loop}
+        onClick={this._onClick}
         onError={this._onError}
         onReady={this._onReady}
         onChangeState={this._onChangeState}

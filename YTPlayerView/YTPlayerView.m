@@ -401,6 +401,12 @@ NSString static *const kYTPlayerSyndicationRegexPattern = @"^https://tpc.googles
     [self notifyDelegateOfYouTubeCallbackUrl:request.URL];
     return NO;
   } else if ([request.URL.scheme isEqual: @"http"] || [request.URL.scheme isEqual:@"https"]) {
+      if ([request.URL.path rangeOfString:@"embed"].location == NSNotFound) {
+          if ([self.delegate respondsToSelector:@selector(onClicked:)]) {
+            return [self.delegate onClicked:request.URL.absoluteString];             
+          }
+      }
+
     return [self handleHttpNavigationToUrl:request.URL];
   }
   return YES;

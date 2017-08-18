@@ -68,6 +68,15 @@ typedef NS_ENUM(NSInteger, YTPlayerError) {
  */
 - (void)playerViewDidBecomeReady:(nonnull YTPlayerView *)playerView;
 
+@optional
+/**
+ * Invoked when the player blocks a non embeded http or https request
+ *
+ * @param url The url that was clicked by user
+ * Note: if onClicked is set, then it will not handle navigation to url internally
+ */
+- (BOOL)onClicked:(nonnull NSString *)url;
+
 /**
  * Callback invoked when player state has changed, e.g. stopped or started playback.
  *

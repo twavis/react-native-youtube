@@ -9,6 +9,7 @@
 
 @interface RCTYouTube ()
 
+@property (nonatomic, copy) RCTDirectEventBlock onClick;
 @property (nonatomic, copy) RCTDirectEventBlock onError;
 @property (nonatomic, copy) RCTDirectEventBlock onReady;
 @property (nonatomic, copy) RCTDirectEventBlock onChangeState;
@@ -173,6 +174,17 @@
     if (_onReady) {
         _onReady(@{@"target": self.reactTag});
     }
+}
+
+// This is called from YTPlayer's shouldStartLoadWithRequest, returning no halts
+// loading url, so if onCLick exists then all navigatiom must be handled via JS's onClick function
+- (BOOL)onClicked:(NSString *)url {
+    if (_onClick) {
+        _onClick(@{@"url": url,
+                   @"target": self.reactTag});
+        return NO;
+    }
+    return YES;
 }
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state {
