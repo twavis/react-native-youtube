@@ -234,10 +234,12 @@ export class YouTubeWebView extends React.Component {
     const url = navigator.url;
     const origin = this.props.origin;
 
-    // load if incldues data:text/html and timesLoaded is 0
-    if (url.indexOf('data:text/html') !== -1 && this.timesLoaded < 1) {
-      this.timesLoaded += 1;
-      return true;
+    if (url.indexOf('data:text/html') !== -1) {
+      if (this.timesLoaded < 1) {
+        this.timesLoaded += 1;
+        return true;
+      }
+      return false;
     }
 
     // xxx todo - when to call stopLoading? It seemed it was required on first android
