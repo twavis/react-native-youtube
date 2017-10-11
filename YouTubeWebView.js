@@ -37,8 +37,6 @@ const patchPostMessageJsCode = `(${String(() => {
 */
 const embeddedYouTubeHTML = ({
   videoId,
-  width,
-  height,
   options: {
     autoplay,
     playsinline,
@@ -63,7 +61,7 @@ const embeddedYouTubeHTML = ({
     <body>
 
 
-      <iframe id="youtube-player" type="text/html" width="${width}" height="${height}" enablejsapi=true
+      <iframe id="youtube-player" type="text/html" frameborder="0" style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" height="100%" width="100%" enablejsapi=true
         src="http://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=${rel}&playsinline=${playsinline}&showinfo=${showinfo}&modestbranding=${modestbranding}&controls=${controls}&version=3&origin=${origin}"
         frameborder="0"></iframe>    
 
@@ -390,7 +388,7 @@ export class YouTubeWebView extends React.Component {
   }
 
   render() {
-    const {controls, width, height, origin, play, videoId} = this.props;
+    const {controls, origin, play, videoId} = this.props;
 
     return (
       <WebView
@@ -400,7 +398,7 @@ export class YouTubeWebView extends React.Component {
         {...this.props}
         origin={origin}
         key={`YouTubeWebViewPlayer`}
-        style={{width, height}}
+        style={{flex: 1, alignSelf: 'stretch'}}
         javaScriptEnabled
         mediaPlaybackRequiresUserAction={false}
         injectedJavaScript={patchPostMessageJsCode}
@@ -414,8 +412,6 @@ export class YouTubeWebView extends React.Component {
           baseUrl: origin,
           html: embeddedYouTubeHTML({
             videoId,
-            width,
-            height,
             options: {
               autoplay: play,
               playsinline: true,
